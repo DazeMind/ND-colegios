@@ -193,14 +193,14 @@ export default function Create({ regions }) {
                                 <div className="flex items-center justify-start mt-6">
                                     <Button
                                         type="submit"
-                                        className="m-4 shadow-lg rounded button border-2 border-gray-400 p-2"
+                                        className="m-4 shadow-lg rounded button border-2 border-gray-400 py-3 px-5"
                                         disabled={processing} 
                                     >
                                         {processing ? 'Cancelando...' : 'Cancelar'}
                                     </Button>
                                     <Button
                                         type="submit"
-                                        className="m-4 bg-gray-800 rounded button p-2 text-white"
+                                        className="m-4 bg-gray-800 rounded button py-3 px-5 text-white"
                                         disabled={processing} 
                                     >
                                         {processing ? 'Guardando...' : 'Crear Cliente'}
