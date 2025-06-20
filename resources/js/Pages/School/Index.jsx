@@ -1,12 +1,12 @@
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import Modal from '@/Components/Modal';
-import { TrashIcon } from '@heroicons/react/24/solid'; // versión sólida
+import { TrashIcon } from '@heroicons/react/24/solid';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Button } from '@headlessui/react';
-import { Head,router } from '@inertiajs/react';
+import { Head,router,usePage } from '@inertiajs/react';
 import { Typography } from '@material-tailwind/react';
+import FlashMessage from '@/Components/FlashMessage';
+import { useEffect, useState } from 'react';
+import TabsNav from '@/Components/NavBar/NavsBar';
 
 function createSchool() {
     router.get(route('schools.create'), {
@@ -15,26 +15,48 @@ function createSchool() {
 }
 function handleDelete($id){
     router.delete(route('schools.destroy',{school: $id}), {
-        onFinish: () => console.log('redirigiendo'),
+        preserveScroll: true,
+        onSuccess: () => {
+            console.log('Colegio eliminado');
+        },
     }); 
 }
 const TABLE_HEAD = ['ID', 'COLEGIO', 'RUT', ''];
 
 export default function Dashboard({schools}) {
+    const { flash } = usePage().props;
+    const [flashMessage, setFlashMessage] = useState(flash);
+
+    useEffect(() => {
+        if (flash?.message) {
+            setFlashMessage(flash);
+        }
+    }, [flash]);
+
     return (
         <AuthenticatedLayout
-        header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Colegios</h2>}
+        header={<TabsNav activeTabKey="colegios"/>}
         >
         <Head title="Dashboard" />
         <div className="py-12">
             <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div className="mb-6 flex justify-between items-center">
-                    <TextInput className="text-lg font-bold" placeholder="Buscar ..." />
+                <div className="mb-6 flex justify-end items-end">
+                    {/* <TextInput className="text-lg font-bold" placeholder="Buscar ..." /> */}
                     <Button onClick={createSchool} className='ms-12 bg-yellow-500 text-white px-12 py-2 rounded hover:bg-blue-600'>
                     + NUEVO 
                     </Button>
                 </div>
-
+                {flashMessage?.message && (
+                    <div className="p-6">
+                        <FlashMessage
+                            variant={flashMessage.type}
+                            title={flashMessage.title}
+                            content={flashMessage.content}
+                            show={true}
+                            onDismiss={() => setFlashMessage(null)}
+                        />
+                    </div>
+                )}
                 <div className="overflow-x-auto bg-white shadow-sm sm:rounded-lg">
                     <table className="w-full min-w-max table-auto text-left">
                         <thead>
@@ -93,9 +115,6 @@ export default function Dashboard({schools}) {
                     </tbody>
                     </table>
                 </div>
-                        <div>
-                            FOOTER 0 - 8 filas por pagina[]  [1,2,3,4,5]
-                        </div>
             </div>
         </div>
         </AuthenticatedLayout>

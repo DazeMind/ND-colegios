@@ -35,7 +35,7 @@ class InstitutionController extends Controller
 
         $institutions = $query->paginate($perPage)->withQueryString();
         
-        return Inertia::render('Dashboard', [
+        return Inertia::render('Institution/Index', [
             'regions' => Region::with('province.comuna')->get(),
             'institutions' => $institutions,
             'filters' => request()->only(['search']),

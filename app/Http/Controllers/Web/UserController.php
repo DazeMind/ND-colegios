@@ -58,6 +58,11 @@ class UserController extends Controller
             ]);
 
             $newUser->schools()->sync($request->input('schools_ids', []));
+
+            return to_route('schools.index')
+                ->with('title', 'Éxito')
+                ->with('message', 'Usuario "'.$newUser->name.' '.$newUser->surnames.'" creado exitosamente.')
+                ->with('type', 'success');
         });
 
         return redirect()->route('user.index')->with('success', 'Usuario creado exitosamente.');

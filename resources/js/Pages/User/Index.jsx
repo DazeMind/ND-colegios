@@ -1,7 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Button } from '@headlessui/react';
-import { Head,router } from '@inertiajs/react';
+import { Head,router,usePage } from '@inertiajs/react';
 import { Typography } from '@material-tailwind/react';
+import FlashMessage from '@/Components/FlashMessage';
+import { useState } from 'react';
+import TabsNav from '@/Components/NavBar/NavsBar';
 
 function createUser() {
     router.get(route('user.create'), {
@@ -12,9 +15,12 @@ function createUser() {
 const TABLE_HEAD = ['ID', 'USUARIO', 'RUT', 'CORREO', 'COLEGIO ASOCIADO'];
 
 export default function Dashboard({users}) {
+    const { flash } = usePage().props;
+    const [flashMessage, setFlashMessage] = useState(flash);
+
     return (
         <AuthenticatedLayout
-        header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Usuarios</h2>}
+        header={ <TabsNav activeTabKey="usuarios"/> }
         >
         <Head title="Dashboard" />
         <div className="py-12">
@@ -25,7 +31,17 @@ export default function Dashboard({users}) {
                     + Agregar usuario 
                     </Button>
                 </div>
-
+                {flashMessage?.message && (
+                    <div className="p-6">
+                        <FlashMessage
+                            variant={flashMessage.type}
+                            title={flashMessage.title}
+                            content={flashMessage.content}
+                            show={true}
+                            onDismiss={() => setFlashMessage(null)}
+                        />
+                    </div>
+                )}
                 <div className="overflow-x-auto bg-white shadow-sm sm:rounded-lg">
                     <table className="w-full min-w-max table-auto text-left">
                         <thead>
@@ -87,9 +103,6 @@ export default function Dashboard({users}) {
                     </tbody>
                     </table>
                 </div>
-                        <div>
-                            FOOTER 0 - 8 filas por pagina[]  [1,2,3,4,5]
-                        </div>
             </div>
         </div>
         </AuthenticatedLayout>

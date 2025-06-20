@@ -40,8 +40,6 @@ export default function Dashboard({institutions, filters }) {
     };
 
     useEffect(() => {
-        if (flash?.message) return;
-
         const timeout = setTimeout(() => {
         get(route('dashboard'), {
             preserveState: true,
@@ -54,8 +52,8 @@ export default function Dashboard({institutions, filters }) {
     }, [data.search, data.per_page]);
 
     return (
-        <AuthenticatedLayout>
-        <Head title="Dashboard" />
+        <AuthenticatedLayout >
+        <Head title="Intitucion" />
         <div className="py-12">
             <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div className="mb-6 flex justify-between items-center">

@@ -16,6 +16,8 @@ npm run dev
 }
 con esto obtendremos el TOKEN el cual pasaremos como bearer TOKEN para acceder a get y post de /api/institutions
 
+- http://localhost:8000 o http://127.0.0.1:8000
+- credenciales correo: superadmin@example.com contraseña: 12345678
 ## Informacion
 - asumimos como cliente a institucion. 
 

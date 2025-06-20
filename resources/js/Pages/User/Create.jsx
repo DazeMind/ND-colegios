@@ -35,7 +35,6 @@ export default function Create({ schools }) {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setData(name, value);
-        console.log("comuna seleccionada",name,value);
         if (name === 'phone') {
             setPhoneFrontendError(validatePhone(value) ? null : 'Teléfono no válido');
         }
@@ -47,8 +46,6 @@ export default function Create({ schools }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        // Validación antes de enviar
         const isRutValid = validateRut(data.rut);
         const isPhoneValid = validatePhone(data.phone);
 

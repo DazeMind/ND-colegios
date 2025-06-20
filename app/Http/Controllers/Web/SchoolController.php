@@ -58,6 +58,10 @@ class SchoolController extends Controller
                 'created_by'=> $user->id, 
             ]);
         
+            return to_route('schools.index')
+                ->with('title', 'Éxito')
+                ->with('message', 'Colegio "'.$newSchool->name.'" creado exitosamente.')
+                ->with('type', 'success');
         } catch (\Throwable $th) {
             error_log($th);
             Log::error($th);
@@ -103,12 +107,16 @@ class SchoolController extends Controller
                         $S_U->delete();
                     }
                     $school->delete();
+                    return to_route('schools.index')
+                        ->with('title', 'Éxito')
+                        ->with('message', 'Colegio "'.$school->name.'" eliminado exitosamente.')
+                        ->with('type', 'success');
                 }
             }
         } catch (\Throwable $th) {
             error_log($th);
             Log::error($th);
+            return;
         }
-        return;
     }
 }
