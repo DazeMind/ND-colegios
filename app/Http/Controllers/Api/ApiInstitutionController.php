@@ -52,7 +52,7 @@ class ApiInstitutionController extends Controller
             'email'       => $request->email,
             'start_date'  => $request->start_date,
             'state_id'  => $request->state_id,
-            'created_by'  => Auth::id() ?? $request->created_by,
+            'created_by'  => Auth::id(),
         ]);
 
         return response()->json([
