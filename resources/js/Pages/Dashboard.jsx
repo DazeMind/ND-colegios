@@ -1,12 +1,12 @@
-import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Button } from '@headlessui/react';
 import { Head,router } from '@inertiajs/react';
 import { Typography } from '@material-tailwind/react';
-import {useForm} from '@inertiajs/react';
+import {useForm, usePage} from '@inertiajs/react';
 import { useEffect } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
-
+import { useState } from 'react';
+import FlashMessage from '@/Components/FlashMessage';
 function createInstitution() {
     router.get(route('institution.create'), {
         onFinish: () => console.log('redirigiendo'),
@@ -16,11 +16,14 @@ function createInstitution() {
 const TABLE_HEAD = ['ID', 'CLIENTE', 'ESTADO', 'RESPONSABLE'];
 
 export default function Dashboard({institutions, filters }) {
+    const { flash } = usePage().props;
 
     const { data, setData, get, processing } = useForm({
         search: filters.search || '',
         per_page: filters.per_page || 10,
     });
+
+    const [showFlash, setShowFlash] = useState(true);
 
     function fetchData(pageUrl = null) {
         get(
@@ -37,6 +40,8 @@ export default function Dashboard({institutions, filters }) {
     };
 
     useEffect(() => {
+        if (flash?.message) return;
+
         const timeout = setTimeout(() => {
         get(route('dashboard'), {
             preserveState: true,
@@ -70,6 +75,18 @@ export default function Dashboard({institutions, filters }) {
                     + NUEVO 
                     </Button>
                 </div>
+
+                {flash?.message && (
+                    <div className="p-6">
+                        <FlashMessage
+                            variant={flash.type || ''}
+                            title={flash.title || ''}
+                            content={flash.content}
+                            show={showFlash}
+                            onDismiss={() => setShowFlash(false)}
+                        />
+                    </div>
+                )}
 
                 <div className="overflow-x-auto bg-white shadow-sm sm:rounded-lg">
                     <table className="w-full min-w-max table-auto text-left">

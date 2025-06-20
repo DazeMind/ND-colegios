@@ -24,8 +24,8 @@ class SchoolStoreRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'rut' => 'required|string|max:10|min:9|unique:schools,rut',
-            'region' => 'required|',
-            'commune' => 'required|',
+            'region' => 'required|int',
+            'commune' => 'required|int',
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:9|min:9',
         ];

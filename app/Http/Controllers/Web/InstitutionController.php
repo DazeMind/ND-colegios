@@ -68,14 +68,21 @@ class InstitutionController extends Controller
                 'address'=> $request->input('address'),
                 'phone'=> $request->input('phone'),
                 'start_date'=> $request->input('start_date'),
+                'state_id'=> 1, //default aceptado
                 'created_by'=> $user->id, //asignamos el ID del usuario registrado que esta creando el registro
             ]);
+
+            return to_route('dashboard')
+                ->with('title', 'Éxito')
+                ->with('message', 'Cliente "'.$newInstitution->name.'" creada exitosamente.')
+                ->with('type', 'success');
+
         } catch (\Throwable $th) {
             error_log($th);
             Log::error($th);
+            return back()->with('flash.message', 'Ocurrió un error inesperado. Inténtalo de nuevo.')->with('flash.type', 'error');
+
         }
-       
-        return;
     }
     /**
      * Display the specified resource.

@@ -116,14 +116,14 @@ export default function Create({ regions }) {
                                             className="mt-1 block w-full"
                                             value={data.region}
                                             onChange={(value) => {
-                                                const selectedRegion = regions.find(r => r.name === value);
+                                                const selectedRegion = regions.find(r => r.id.toString() === value);
                                                 setSelectedRegionId(selectedRegion?.id || null);
                                                 setData('region', value);
                                                 setData('commune', '');
                                             }}
                                         >
                                             {regions.map((region) => (
-                                                <Option className="mt-1 block w-full" key={region.id} value={region.name}>
+                                                <Option className="mt-1 block w-full" key={region.id} value={region.id.toString()}>
                                                     {region.name}
                                                 </Option>
                                             ))}
@@ -141,7 +141,7 @@ export default function Create({ regions }) {
                                             disabled={!selectedRegionId}
                                         >
                                             {filteredCommunes.map((commune) => (
-                                                <Option className="mt-1 block w-full" key={commune.id} value={commune.name}>
+                                                <Option className="mt-1 block w-full" key={commune.id} value={commune.id.toString()}>
                                                     {commune.name}
                                                 </Option>
                                             ))}
