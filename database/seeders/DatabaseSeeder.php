@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UserSeed::class,
             CountrySeed::class,RegionSeed::class,ProvinceSeed::class,ComunaSeed::class,
             InstitutionSeed::class,
+            SchoolSeed::class,
 
         ]);
 

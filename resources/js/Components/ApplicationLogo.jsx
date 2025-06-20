@@ -5,7 +5,7 @@ export default function ApplicationLogo(props) {
             {...props}
             src={logo}
             alt="Logo"
-            className="h-auto w-auto" // puedes personalizar el tamaño
+            className="h-auto w-auto"
         />
         // <svg
         //     {...props}

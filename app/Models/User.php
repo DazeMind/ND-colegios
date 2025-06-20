@@ -14,6 +14,15 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    public function schools()
+    {
+        return $this->belongsToMany(School::class, 'school_users')->withTimestamps();
+    }
+    
     /**
      * The attributes that are mass assignable.
      *

@@ -6,27 +6,30 @@ import { Button } from '@headlessui/react';
 import { Head, useForm } from '@inertiajs/react';
 import { validateRut,validatePhone } from '@/Utils/Validations';
 import { useMemo, useState } from 'react';
-import { Select,Option  } from '@material-tailwind/react';
+// import { Select,Option  } from '@material-tailwind/react';
+import Select from 'react-select';
 
-export default function Create({ regions }) {
+export default function Create({ schools }) {
+
+    const options = schools.map((school) => ({
+      value: school.id,
+      label: school.name,
+    }));
+
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',        
-        rut: '',         
-        region: '',      
-        commune: '',      
-        address: '',   
+        surnames: '',         
+        rut: '',      
         phone: '', 
-        start_date: '',
+        email: '',      
+        schools_ids: [],
     });
+
+    const selectedSchools = options.filter(option => data.schools_ids.includes(option.value));
+
     const [phoneFrontendError, setPhoneFrontendError] = useState(null);
     const [rutFrontendError, setRutFrontendError] = useState(null);
-    const [selectedRegionId, setSelectedRegionId] = useState(null);
-
-    const filteredCommunes = useMemo(() => {
-        const region = regions.find(r => r.id === selectedRegionId);
-        if (!region) return [];        
-        return region.province.flatMap(province => province.comuna);
-    }, [selectedRegionId, regions]);
+    
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -53,13 +56,13 @@ export default function Create({ regions }) {
 
         if (!isRutValid || !isPhoneValid) return;
 
-        post(route('institution.store'), {
+        post(route('user.store'), {
             onSuccess: () => {
-                console.log('Cliente creado correctamente');
+                console.log('Usuario creado correctamente');
                 reset();
             },
             onError: (formErrors) => {
-                console.error('Error al crear el cliente:', formErrors);
+                console.error('Error al crear el Usuario:', formErrors);
             },
             onFinish: () => {
                 console.log('Formulario finalizado');
@@ -71,127 +74,104 @@ export default function Create({ regions }) {
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    CREAR USER
+                    Usuarios
                 </h2>
             }
         >
-            <Head title="Crear Cliente" /> {/* Changed title to be more specific */}
-            <div className="py-12">
+            <Head title="Crear Usuario" />
+            <div className="">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                    <div className="bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            {/* 5. Attach the handleSubmit function to the form's onSubmit event */}
                             <form onSubmit={handleSubmit} className="space-y-4">
-                                <div>
-                                    <InputLabel htmlFor="name" value="Nombre" />
-                                    <TextInput
-                                        id="name"
-                                        type="text" // Changed type from 'name' to 'text'
-                                        name="name"
-                                        value={data.name}
-                                        className="mt-1 block w-full"
-                                        autoComplete="off" // No specific autocomplete for this example
-                                        isFocused={true}
-                                        onChange={handleInputChange} // Use generic handler for text inputs
-                                    />
-                                    <InputError message={errors.name} className="mt-2" />
-                                </div>
 
-                                <div>
-                                    <InputLabel htmlFor="rut" value="RUT (sin puntos con guion)" />
-                                    <TextInput
-                                        id="rut"
-                                        type="text"
-                                        name="rut"
-                                        value={data.rut}
-                                        className="mt-1 block w-full"
-                                        onChange={handleInputChange}
-                                    />
-                                    <InputError message={rutFrontendError || errors.rut} className="mt-2" />
-                                    <InputError message={errors.rut} className="mt-2" />
+                                <div className="flex gap-4">
+                                    <div className="w-1/3 ">
+                                        <InputLabel htmlFor="name" value="Nombre *" />
+                                        <TextInput
+                                            id="name"
+                                            type="text" 
+                                            name="name"
+                                            value={data.name}
+                                            className="mt-1 block w-full"
+                                            autoComplete="off" 
+                                            isFocused={true}
+                                            onChange={handleInputChange}
+                                        />
+                                        <InputError message={errors.name} className="mt-2" />
+                                    </div>
+                                    <div className="w-1/3">
+                                        <InputLabel htmlFor="surnames" value="Apellidos *" />
+                                        <TextInput
+                                            id="surnames"
+                                            type="text" 
+                                            name="surnames"
+                                            value={data.surnames}
+                                            className="mt-1 block w-full"
+                                            autoComplete="off" 
+                                            isFocused={true}
+                                            onChange={handleInputChange}
+                                        />
+                                        <InputError message={errors.surnames} className="mt-2" />
+                                    </div>
+                                    <div className="w-1/3">
+                                        <InputLabel htmlFor="rut" value="RUT (sin puntos con guion) *" />
+                                        <TextInput
+                                            id="rut"
+                                            type="text"
+                                            name="rut"
+                                            value={data.rut}
+                                            className="mt-1 block w-full"
+                                            onChange={handleInputChange}
+                                        />
+                                        <InputError message={rutFrontendError || errors.rut} className="mt-2" />
+                                        <InputError message={errors.rut} className="mt-2" />
+                                    </div>
                                 </div>
-
-                                <div>
-                                    <InputLabel htmlFor="region" value="Selecciona una región" />
-                                    <Select
-                                        id="region"
-                                        name="region"
-                                        className="mt-1 block w-full"
-                                        value={data.region}
-                                        onChange={(value) => {
-                                            const selectedRegion = regions.find(r => r.name === value);
-                                            setSelectedRegionId(selectedRegion?.id || null);
-                                            setData('region', value);
-                                            setData('commune', ''); // Reset comuna al cambiar región
-                                        }}
-                                    >
-                                        {regions.map((region) => (
-                                            <Option className="mt-1 block w-full" key={region.id} value={region.name}>
-                                                {region.name}
-                                            </Option>
-                                        ))}
-                                    </Select>
-                                    <InputError message={errors.region} className="mt-2" />
-                                </div>
-
-                                <div>
-                                    <InputLabel htmlFor="commune" value="Selecciona una comuna" />
-                                    <Select
-                                        id="commune"
-                                        name="commune"
-                                        className="mt-1 block w-full"
-                                        value={data.commune}
-                                        onChange={(value) => setData('commune', value)}
-                                        disabled={!selectedRegionId}
-                                    >
-                                        {filteredCommunes.map((commune) => (
-                                            <Option className="mt-1 block w-full" key={commune.id} value={commune.name}>
-                                                {commune.name}
-                                            </Option>
-                                        ))}
-                                    </Select>
-                                    <InputError message={errors.commune} className="mt-2" />
-                                </div>
-
-                                <div>
-                                    <InputLabel htmlFor="address" value="Dirección" />
-                                    <TextInput
-                                        id="address"
-                                        type="text"
-                                        name="address"
-                                        value={data.address}
-                                        className="mt-1 block w-full"
-                                        onChange={handleInputChange}
-                                    />
-                                    <InputError message={errors.address} className="mt-2" />
-                                </div>
-
-                                <div>
-                                    <InputLabel htmlFor="phone" value="Teléfono" />
-                                    <TextInput
-                                        id="phone"
-                                        type="text"
-                                        name="phone"
-                                        value={data.phone}
-                                        
-                                        className="mt-1 block w-full"
-                                        onChange={handleInputChange}
-                                    />
-                                    <InputError message={phoneFrontendError || errors.phone} className="mt-2" />
-                                    <InputError message={errors.phone} className="mt-2" />
-                                </div>
-
-                                <div>
-                                    <InputLabel htmlFor="start_date" value="Fecha de Inicio" />
-                                    <TextInput
-                                        id="start_date"
-                                        type="date" // Use type="date" for date picker
-                                        name="start_date"
-                                        value={data.start_date}
-                                        className="mt-1 block w-full"
-                                        onChange={handleInputChange}
-                                    />
-                                    <InputError message={errors.start_date} className="mt-2" />
+                                <div className="flex gap-4">
+                                    <div className="w-1/3">
+                                        <InputLabel htmlFor="phone" value="Teléfono *" />
+                                        <TextInput
+                                            id="phone"
+                                            type="text"
+                                            name="phone"
+                                            value={data.phone}
+                                            
+                                            className="mt-1 block w-full"
+                                            onChange={handleInputChange}
+                                        />
+                                        <InputError message={phoneFrontendError || errors.phone} className="mt-2" />
+                                        <InputError message={errors.phone} className="mt-2" />
+                                    </div>
+                                    <div className="w-1/3">
+                                         <InputLabel htmlFor="email" value="Correo *" />
+                                        <TextInput
+                                            id="email"
+                                            type="text"
+                                            name="email"
+                                            value={data.email}
+                                            className="mt-1 block w-full"
+                                            onChange={handleInputChange}
+                                        />
+                                        <InputError message={errors.email} className="mt-2" />
+                                    </div>
+                                    <div className="w-1/3">
+                                        <InputLabel htmlFor="schools" value="Colegios asignados *" />
+                                        <Select
+                                            isMulti
+                                            id="schools"
+                                            name="schools_ids"
+                                            options={options}
+                                            value={selectedSchools}
+                                            onChange={(selected) => {
+                                                const selectedIds = selected.map(s => s.value);
+                                                setData('schools_ids', selectedIds);
+                                            }}
+                                            className="mt-1 block w-full"
+                                            classNamePrefix="select"
+                                        />
+                                        <InputError message={errors.schools_ids} className="mt-2" />
+                                    </div>
                                 </div>
 
                                 <div className="flex items-center justify-end mt-4">

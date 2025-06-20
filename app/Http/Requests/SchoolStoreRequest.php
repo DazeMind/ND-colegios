@@ -24,11 +24,10 @@ class SchoolStoreRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'rut' => 'required|string|max:10|min:9|unique:schools,rut',
-            'region_id' => 'required|',
-            'commune_id' => 'required|',
+            'region' => 'required|',
+            'commune' => 'required|',
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:9|min:9',
-            'start_date' => 'required',
         ];
     }
     public function messages()
@@ -45,7 +44,6 @@ class SchoolStoreRequest extends FormRequest
             'phone.required' => 'El campo telefono es obligatorio.',
             'phone.min' => 'El campo telefono debe tener 9 digitos',
             'phone.max' => 'El campo telefono debe tener 9 digitos.',
-            'start_date.required' => 'El campo Fecha Inicio es obligatorio.',
         ];
     }
 }

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserStoreRequest;
+use App\Models\Institution;
 use App\Models\Region;
+use App\Models\School;
 use App\Models\SchoolUser;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,7 +23,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('User/Index', [
+            'regions' => Region::with('province.comuna')->get(),
+            'users' => User::with('creator')->get(),
+        ]);
     }
 
     /**
@@ -30,7 +35,7 @@ class UserController extends Controller
     public function create()
     {
         return Inertia::render('User/Create', [
-            'regions' => Region::with('province.comuna')->get(),
+            'schools' => School::with('institution')->get(),
         ]);
     }
 
@@ -39,9 +44,7 @@ class UserController extends Controller
      */
     public function store(UserStoreRequest $request)
     {
-        DB::beginTransaction();
-        try {
-
+        DB::transaction(function () use ($request) {
             $user = Auth::user();
 
             $newUser = User::create([
@@ -50,23 +53,14 @@ class UserController extends Controller
                 'rut' => $request->input('rut'),
                 'phone' => $request->input('phone'),
                 'email' => $request->input('email'),
-                'password' => Hash::make('@contraseñaSegura1'), // contraseña por default para usuario
+                'password' => Hash::make('@contraseñaSegura1'),
                 'created_by' => $user->id,
             ]);
-            foreach ($request->input('school') as $school) { //recibimos la lista de colegios
-                 $school_user = SchoolUser::Create([
-                    'user_id'=> $newUser->id,
-                    'school_id'=> $school->id,
-                ]);
-            }
 
-            DB::commit();
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            error_log($th);
-            Log::error($th);
-        }
-        
+            $newUser->schools()->sync($request->input('schools_ids', []));
+        });
+
+        return redirect()->route('user.index')->with('success', 'Usuario creado exitosamente.');
     }
 
     /**

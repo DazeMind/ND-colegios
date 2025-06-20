@@ -37,7 +37,7 @@ class UserStoreRequest extends FormRequest
             'rut.required' => 'El campo rut es obligatorio.',
             'rut.max' => 'Recuerda ingresar el RUT sin puntos y con GUION.',
             'rut.min' => 'Recuerda ingresar el RUT sin puntos y con GUION.',
-            'rut.unique' => 'El rut ya ha sido utilizado por un Colegio.',
+            'rut.unique' => 'El rut ya ha sido utilizado por un usuario.',
             'phone.required' => 'El campo telefono es obligatorio.',
             'phone.min' => 'El campo telefono debe tener 9 digitos',
             'phone.max' => 'El campo telefono debe tener 9 digitos.',

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SchoolStoreRequest;
+use App\Models\Institution;
 use App\Models\Region;
 use App\Models\School;
+use App\Models\SchoolUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -18,7 +20,11 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('School/Index', [
+            'regions' => Region::with('province.comuna')->get(),
+            'institutions' => Institution::with('state','creator')->get(),
+            'schools' => School::with('state','creator','institution')->get(),
+        ]);
     }
 
     /**
@@ -28,7 +34,7 @@ class SchoolController extends Controller
     {
         return Inertia::render('School/Create', [
             'regions' => Region::with('province.comuna')->get(),
-
+            'institutions' => Institution::get(),
         ]);
     }
 
@@ -40,14 +46,16 @@ class SchoolController extends Controller
         try {
             $user = Auth::user();
             $newSchool = School::Create([
+                'institution_id'=> $request->input('institution_id'),
                 'name'=> $request->input('name'),
                 'rut'=> $request->input('rut'),
                 'region_id'=> $request->input('region'),
                 'commune_id'=> $request->input('commune'),
                 'address'=> $request->input('address'),
                 'phone'=> $request->input('phone'),
+                'state_id'=> 1, //state default 1 Aceptado
                 'start_date'=> $request->input('start_date'),
-                'created_by'=> $user->id, //asignamos el ID del usuario registrado que esta creando el registro
+                'created_by'=> $user->id, 
             ]);
         
         } catch (\Throwable $th) {
@@ -89,12 +97,18 @@ class SchoolController extends Controller
         try {
             $school = School::findOrFail($id);
             if ($school) {
-                $school->destroy();
+                $schools_users = SchoolUser::where('school_id', $school->id)->get();
+                if ($schools_users) {
+                    foreach ($schools_users as $S_U) {
+                        $S_U->delete();
+                    }
+                    $school->delete();
+                }
             }
         } catch (\Throwable $th) {
             error_log($th);
             Log::error($th);
         }
-        
+        return;
     }
 }

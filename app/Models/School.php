@@ -27,10 +27,20 @@ class School extends Model
     {
         return $this->belongsTo(State::class, 'state_id');
     }
+    public function institution()
+    {
+        return $this->belongsTo(Institution::class, 'institution_id');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'school_users')->withTimestamps();
+    }
 
     protected $fillable = [
         'name',
         'rut',
+        'institution_id',
         'region_id',//no es necesario teniendo el id de la comuna
         'commune_id',
         'address',

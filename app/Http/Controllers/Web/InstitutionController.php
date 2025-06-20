@@ -91,7 +91,7 @@ class InstitutionController extends Controller
         try {
             $institution = Institution::findOrFail($id);
             if ($institution) {
-                $institution->destroy();
+                $institution->delete();
                 #Validar relaciones
             }
         } catch (\Throwable $th) {
