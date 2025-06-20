@@ -5,8 +5,9 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Button } from '@headlessui/react';
 import { Head, useForm } from '@inertiajs/react';
 import { validateRut,validatePhone } from '@/Utils/Validations';
-import { useMemo, useState } from 'react';
-// import { Select,Option  } from '@material-tailwind/react';
+import {  useState } from 'react';
+import TabsNav from '@/Components/NavBar/NavsBar';
+
 import Select from 'react-select';
 
 export default function Create({ schools }) {
@@ -72,11 +73,7 @@ export default function Create({ schools }) {
 
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Usuarios
-                </h2>
-            }
+            header={ <TabsNav activeTabKey="usuarios"/> }
         >
             <Head title="Crear Usuario" />
             <div className="">
@@ -174,20 +171,20 @@ export default function Create({ schools }) {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center justify-end mt-4">
+                                <div className="flex items-center justify-start mt-6">
                                     <Button
                                         type="submit"
-                                        className="ml-4"
-                                        disabled={processing} // Disable button during submission
+                                        className="m-4 shadow-lg rounded button border-2 border-gray-400 py-3 px-5"
+                                        disabled={processing} 
                                     >
                                         {processing ? 'Cancelando...' : 'Cancelar'}
                                     </Button>
                                     <Button
                                         type="submit"
-                                        className="ml-4"
-                                        disabled={processing} // Disable button during submission
+                                        className="m-4 bg-gray-800 rounded button py-3 px-5 text-white"
+                                        disabled={processing} 
                                     >
-                                        {processing ? 'Guardando...' : 'Crear Cliente'}
+                                        {processing ? 'Guardando...' : 'Agregar'}
                                     </Button>
                                 </div>
                             </form>

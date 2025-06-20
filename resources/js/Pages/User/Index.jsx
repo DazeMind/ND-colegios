@@ -76,7 +76,9 @@ export default function Dashboard({users}) {
                                 </td>
                                 <td className={classes}>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                    RELACION
+                                        {user.schools.map(school => (
+                                            <p key={school.id}>{school.name}</p>
+                                        ))}
                                     </Typography>
                                 </td>
                             </tr>

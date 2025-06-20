@@ -25,7 +25,7 @@ class UserController extends Controller
     {
         return Inertia::render('User/Index', [
             'regions' => Region::with('province.comuna')->get(),
-            'users' => User::with('creator')->get(),
+            'users' => User::with('schools')->get(),
         ]);
     }
 

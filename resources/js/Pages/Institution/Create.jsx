@@ -7,7 +7,7 @@ import { Head, useForm } from '@inertiajs/react';
 import { validateRut,validatePhone } from '@/Utils/Validations';
 import { useMemo, useState } from 'react';
 import { Select,Option  } from '@material-tailwind/react';
-
+import TabsNav from '@/Components/NavBar/NavsBar';
 export default function Create({ regions }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',        
@@ -68,9 +68,7 @@ export default function Create({ regions }) {
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Configuracion Cliente
-                </h2>
+               <TabsNav activeTabKey="cliente"/>
             }
         >
             <Head title="Crear Cliente" /> 

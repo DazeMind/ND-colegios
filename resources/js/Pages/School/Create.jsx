@@ -7,6 +7,7 @@ import { Head, useForm } from '@inertiajs/react';
 import { validateRut,validatePhone } from '@/Utils/Validations';
 import { useMemo, useState } from 'react';
 import { Select,Option  } from '@material-tailwind/react';
+import TabsNav from '@/Components/NavBar/NavsBar';
 
 export default function Create({ regions,institutions }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -67,11 +68,7 @@ export default function Create({ regions,institutions }) {
 
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Crear Colegio
-                </h2>
-            }
+            header={<TabsNav activeTabKey="colegios"/>}
         >
             <Head title="Crear Colegio" /> 
             <div className="py-12">
@@ -200,14 +197,14 @@ export default function Create({ regions,institutions }) {
                                 <div className="flex items-center justify-start mt-6">
                                     <Button
                                         type="submit"
-                                        className="m-4 shadow-lg rounded button border-2 border-gray-400 p-2"
+                                        className="m-4 shadow-lg rounded button border-2 border-gray-400 py-3 px-5"
                                         disabled={processing} 
                                     >
                                         {processing ? 'Cancelando...' : 'Cancelar'}
                                     </Button>
                                     <Button
                                         type="submit"
-                                        className="m-4 bg-gray-800 rounded button p-2 text-white"
+                                        className="m-4 bg-gray-800 rounded button py-3 px-5 text-white"
                                         disabled={processing} 
                                     >
                                         {processing ? 'Guardando...' : 'Agregar'}

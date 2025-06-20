@@ -18,9 +18,27 @@ class InstitutionController extends Controller
      */
     public function index()
     {
+        request()->validate([
+            'search' => ['nullable', 'string'],
+            'per_page' => ['nullable', 'integer', 'in:5,10,25,50'],
+        ]);
+
+        $query = Institution::with('state', 'creator');
+
+        if ($search = request('search')) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('id', 'like', "%{$search}%");
+            });
+        }
+        $perPage = request('per_page', 10);
+
+        $institutions = $query->paginate($perPage)->withQueryString();
+        
         return Inertia::render('Dashboard', [
             'regions' => Region::with('province.comuna')->get(),
-            'institutions' => Institution::with('state','creator')->get(),
+            'institutions' => $institutions,
+            'filters' => request()->only(['search']),
         ]);
     }
 
