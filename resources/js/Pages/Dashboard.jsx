@@ -34,7 +34,7 @@ export default function Dashboard({institutions, filters }) {
             { preserveState: true, replace: true }
         );
     }
-    
+
     const handlePerPageChange = (e) => {
         setData('per_page', parseInt(e.target.value));
     };
@@ -127,12 +127,13 @@ export default function Dashboard({institutions, filters }) {
                                     </Typography>
                                 </td>
                                 <td className={classes}>
-                                    <Typography variant="small" color="blue-gray" className="font-normal">
-                                    <span className={`mr-1 ${
-                                        institution.state.id === 1 ? 'text-green-500'
-                                        : institution.state.id === 2 ? 'text-yellow-500'
-                                        : 'text-red-500'
-                                        }`}>●</span> {institution.state.name}
+                                    <Typography as="span" variant="small" color="blue-gray" className="font-normal">
+                                        <span className={`mr-1 ${
+                                            institution.state.id === 1 ? 'text-green-500'
+                                            : institution.state.id === 2 ? 'text-yellow-500'
+                                            : 'text-red-500'
+                                        }`}>●</span> 
+                                        {institution.state.name}
                                     </Typography>
                                 </td>
                                 <td className={classes}>

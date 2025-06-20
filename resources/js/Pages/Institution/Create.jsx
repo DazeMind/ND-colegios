@@ -6,17 +6,13 @@ import { Button } from '@headlessui/react';
 import { Head, useForm } from '@inertiajs/react';
 import { validateRut,validatePhone } from '@/Utils/Validations';
 import { useMemo, useState } from 'react';
-import { Select,Option  } from '@material-tailwind/react';
+import Select from 'react-select';
 import TabsNav from '@/Components/NavBar/NavsBar';
+
 export default function Create({ regions }) {
+
     const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',        
-        rut: '',         
-        region: '',      
-        commune: '',      
-        address: '',   
-        phone: '', 
-        start_date: '',
+        name: '', rut: '', region: '', commune: '', address: '', phone: '', start_date: '',
     });
     const [phoneFrontendError, setPhoneFrontendError] = useState(null);
     const [rutFrontendError, setRutFrontendError] = useState(null);
@@ -64,6 +60,22 @@ export default function Create({ regions }) {
             }
         });
     };
+
+    const regionOptions = regions.map((region) => ({
+        value: region.id.toString(),
+        label: region.name,
+    }));
+    const handleRegionChange = (selectedOption) => {
+        const selectedRegion = regions.find(r => r.id.toString() === selectedOption?.value);
+        setSelectedRegionId(selectedRegion?.id || null);
+        setData('region', selectedOption?.value || '');
+        setData('commune', '');
+    };
+
+    const communeOptions = filteredCommunes.map((commune) => ({
+        value: commune.id.toString(),
+        label: commune.name,
+    }));
 
     return (
         <AuthenticatedLayout
@@ -114,20 +126,12 @@ export default function Create({ regions }) {
                                             id="region"
                                             name="region"
                                             className="mt-1 block w-full"
-                                            value={data.region}
-                                            onChange={(value) => {
-                                                const selectedRegion = regions.find(r => r.id.toString() === value);
-                                                setSelectedRegionId(selectedRegion?.id || null);
-                                                setData('region', value);
-                                                setData('commune', '');
-                                            }}
-                                        >
-                                            {regions.map((region) => (
-                                                <Option className="mt-1 block w-full" key={region.id} value={region.id.toString()}>
-                                                    {region.name}
-                                                </Option>
-                                            ))}
-                                        </Select>
+                                            value={regionOptions.find(option => option.value === data.region)}
+                                            onChange={handleRegionChange}
+                                            options={regionOptions}
+                                            placeholder="Seleccione una región..."
+                                            isClearable
+                                        />
                                         <InputError message={errors.region} className="mt-2" />
                                     </div>
                                     <div className="w-1/3">
@@ -136,16 +140,15 @@ export default function Create({ regions }) {
                                             id="commune"
                                             name="commune"
                                             className="mt-1 block w-full"
-                                            value={data.commune}
-                                            onChange={(value) => setData('commune', value)}
-                                            disabled={!selectedRegionId}
-                                        >
-                                            {filteredCommunes.map((commune) => (
-                                                <Option className="mt-1 block w-full" key={commune.id} value={commune.id.toString()}>
-                                                    {commune.name}
-                                                </Option>
-                                            ))}
-                                        </Select>
+                                            value={communeOptions.find(option => option.value === data.commune)}
+                                            onChange={(selectedOption) => {
+                                                setData('commune', selectedOption?.value || '');
+                                            }}
+                                            options={communeOptions}
+                                            placeholder="Seleccione una comuna..."
+                                            isDisabled={!selectedRegionId}
+                                            isClearable
+                                        />
                                         <InputError message={errors.commune} className="mt-2" />
                                     </div>
                                     <div className="w-1/3">
@@ -170,7 +173,6 @@ export default function Create({ regions }) {
                                             type="text"
                                             name="phone"
                                             value={data.phone}
-                                            
                                             className="mt-1 block w-full"
                                             onChange={handleInputChange}
                                         />

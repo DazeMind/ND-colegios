@@ -1,5 +1,4 @@
 import { TrashIcon } from '@heroicons/react/24/solid';
-import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Button } from '@headlessui/react';
 import { Head,router,usePage } from '@inertiajs/react';

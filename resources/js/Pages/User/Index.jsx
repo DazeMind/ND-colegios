@@ -91,9 +91,9 @@ export default function Dashboard({users}) {
                                     </Typography>
                                 </td>
                                 <td className={classes}>
-                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                    <Typography variant="small" color="blue-gray" className="font-normal" as="div">
                                         {user.schools.map(school => (
-                                            <p key={school.id}>{school.name}</p>
+                                            <div key={school.id}>{school.name}</div>
                                         ))}
                                     </Typography>
                                 </td>
