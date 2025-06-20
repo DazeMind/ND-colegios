@@ -89,7 +89,10 @@ class InstitutionController extends Controller
      */
     public function show(string $id)
     {
-        //
+    $institution = Institution::with(['state', 'creator','schools.region','schools.commune','schools.users','region','commune'])->findOrFail($id);        
+        return Inertia::render('Institution/ShowResume', [
+            'institution' => $institution,
+        ]);
     }
 
     /**

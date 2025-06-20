@@ -51,6 +51,12 @@ export default function Dashboard({institutions, filters }) {
         return () => clearTimeout(timeout);
     }, [data.search, data.per_page]);
 
+    function handleShowResume(institution){
+        get(route('institution.show', { institution: institution.id }), {
+            preserveState: true,
+            replace: true,
+        });
+    }
     return (
         <AuthenticatedLayout >
         <Head title="Intitucion" />
@@ -113,7 +119,7 @@ export default function Dashboard({institutions, filters }) {
                         const classes = isLast ? "p-4" : "w-1/4 p-4 border-b border-blue-gray-50";
 
                         return (
-                            <tr key={institution.id}>
+                            <tr key={institution.id} className='hover:bg-gray-300' onClick={() => handleShowResume(institution)} role="button" tabIndex={0}>
                                 <td className={classes}>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
                                     {institution.id}
