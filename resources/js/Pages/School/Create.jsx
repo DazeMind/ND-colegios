@@ -3,7 +3,7 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Button } from '@headlessui/react';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm,router } from '@inertiajs/react';
 import { validateRut,validatePhone } from '@/Utils/Validations';
 import { useMemo, useState } from 'react';
 import TabsNav from '@/Components/NavBar/NavsBar';
@@ -49,7 +49,11 @@ export default function Create({ regions,institutions }) {
         const { name, value } = e.target;
         setData(name, value);
         if (name === 'phone') {
-            setPhoneFrontendError(validatePhone(value) ? null : 'Teléfono no válido');
+            if (value === '') {
+                setPhoneFrontendError(null);
+            } else {
+                setPhoneFrontendError(validatePhone(value) ? null : 'Teléfono no válido');
+            }        
         }
 
         if (name === 'rut') {
@@ -61,7 +65,7 @@ export default function Create({ regions,institutions }) {
         e.preventDefault();
 
         const isRutValid = validateRut(data.rut);
-        const isPhoneValid = validatePhone(data.phone);
+        const isPhoneValid = data.phone === '' || validatePhone(data.phone);
 
         if (!isRutValid) setRutFrontendError('RUT no válido');
         if (!isPhoneValid) setPhoneFrontendError('Teléfono no válido');
@@ -82,6 +86,11 @@ export default function Create({ regions,institutions }) {
         });
     };
 
+    function handleButtonCancel (){
+        router.get(route('schools.index'), {
+            onFinish: () => console.log('redirigiendo'),
+        });
+    }
     return (
         <AuthenticatedLayout
             header={<TabsNav activeTabKey="colegios"/>}
@@ -89,12 +98,12 @@ export default function Create({ regions,institutions }) {
             <Head title="Crear Colegio" /> 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className=" bg-white shadow-sm sm:rounded-lg">
+                    <div className=" shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div className="flex gap-4">
                                     <div className="w-1/2">
-                                        <InputLabel htmlFor="name" value="Nombre" />
+                                        <InputLabel htmlFor="name" value="Nombre *" />
                                         <TextInput
                                         id="name"
                                         type="text"
@@ -109,7 +118,7 @@ export default function Create({ regions,institutions }) {
                                     </div>
 
                                     <div className="w-1/2">
-                                        <InputLabel htmlFor="rut" value="RUT (sin puntos con guion)" />
+                                        <InputLabel htmlFor="rut" value="RUT (sin puntos con guion) *" />
                                         <TextInput
                                         id="rut"
                                         type="text"
@@ -124,7 +133,7 @@ export default function Create({ regions,institutions }) {
 
                                 <div className='flex gap-4'>
                                     <div className="w-1/3">
-                                        <InputLabel htmlFor="region" value="Selecciona una región" />
+                                        <InputLabel htmlFor="region" value="Selecciona una región *" />
                                         <Select
                                             id="region"
                                             name="region"
@@ -138,7 +147,7 @@ export default function Create({ regions,institutions }) {
                                         <InputError message={errors.region} className="mt-2" />
                                     </div>
                                     <div className="w-1/3">
-                                        <InputLabel htmlFor="commune" value="Selecciona una comuna" />
+                                        <InputLabel htmlFor="commune" value="Selecciona una comuna *" />
                                         <Select
                                             id="commune"
                                             name="commune"
@@ -155,7 +164,7 @@ export default function Create({ regions,institutions }) {
                                         <InputError message={errors.commune} className="mt-2" />
                                     </div>
                                     <div className="w-1/3">
-                                        <InputLabel htmlFor="address" value="Dirección" />
+                                        <InputLabel htmlFor="address" value="Dirección *" />
                                         <TextInput
                                             id="address"
                                             type="text"
@@ -183,7 +192,7 @@ export default function Create({ regions,institutions }) {
                                         <InputError message={phoneFrontendError || errors.phone} className="mt-2" />
                                     </div>
                                     <div className="w-1/3">
-                                        <InputLabel htmlFor="institution_id" value="Selecciona una institucion" />
+                                        <InputLabel htmlFor="institution_id" value="Selecciona una institucion *" />
                                         <Select
                                             id="institution_id"
                                             name="institution_id"
@@ -199,9 +208,9 @@ export default function Create({ regions,institutions }) {
                                         <InputError message={errors.region} className="mt-2" />
                                     </div>
                                 </div>
-                                <div className="flex items-center justify-start mt-6">
+                                <div className="flex items-center justify-start mt-auto pt-6 border-t">
                                     <Button
-                                        type="submit"
+                                        onClick={handleButtonCancel}
                                         className="m-4 shadow-lg rounded button border-2 border-gray-400 py-3 px-5"
                                         disabled={processing} 
                                     >
@@ -212,7 +221,7 @@ export default function Create({ regions,institutions }) {
                                         className="m-4 bg-gray-800 rounded button py-3 px-5 text-white"
                                         disabled={processing} 
                                     >
-                                        {processing ? 'Guardando...' : 'Agregar'}
+                                        {processing ? 'Guardando...' : 'Crear Colegio'}
                                     </Button>
                                 </div>
                             </form>

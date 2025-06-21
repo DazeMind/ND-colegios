@@ -10,7 +10,7 @@ class Country extends Model
 {
      public function region()
      {  
-        return $this->hasMany(Regiones::class,'id_country');
+        return $this->hasMany(Region::class,'id_country');
      }
      use SoftDeletes; 
     use HasFactory;

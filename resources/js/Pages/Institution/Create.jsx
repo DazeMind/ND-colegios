@@ -3,7 +3,7 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Button } from '@headlessui/react';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm,router } from '@inertiajs/react';
 import { validateRut,validatePhone } from '@/Utils/Validations';
 import { useMemo, useState } from 'react';
 import Select from 'react-select';
@@ -28,19 +28,27 @@ export default function Create({ regions }) {
         const { name, value } = e.target;
         setData(name, value);
         if (name === 'phone') {
-            setPhoneFrontendError(validatePhone(value) ? null : 'Teléfono no válido');
+            if (value === '') {
+                setPhoneFrontendError(null);
+            } else {
+                setPhoneFrontendError(validatePhone(value) ? null : 'Teléfono no válido');
+            }
         }
 
         if (name === 'rut') {
             setRutFrontendError(validateRut(value) ? null : 'RUT no válido');
         }
     };
-
+    function handleButtonCancel (){
+        router.get(route('institution.index'), {
+            onFinish: () => console.log('redirigiendo'),
+        });
+    }
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const isRutValid = validateRut(data.rut);
-        const isPhoneValid = validatePhone(data.phone);
+        const isPhoneValid = data.phone === '' || validatePhone(data.phone);
 
         if (!isRutValid) setRutFrontendError('RUT no válido');
         if (!isPhoneValid) setPhoneFrontendError('Teléfono no válido');
@@ -84,14 +92,14 @@ export default function Create({ regions }) {
             }
         >
             <Head title="Crear Cliente" /> 
-            <div className="py-12">
+            <div className="py-12 ">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                    <div className=" shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div className="flex gap-4">
                                     <div className="w-1/2">
-                                        <InputLabel htmlFor="name" value="Nombre" />
+                                        <InputLabel htmlFor="name" value="Nombre *" />
                                         <TextInput
                                         id="name"
                                         type="text"
@@ -106,7 +114,7 @@ export default function Create({ regions }) {
                                     </div>
 
                                     <div className="w-1/2">
-                                        <InputLabel htmlFor="rut" value="RUT (sin puntos con guion)" />
+                                        <InputLabel htmlFor="rut" value="RUT (sin puntos con guion) *" />
                                         <TextInput
                                         id="rut"
                                         type="text"
@@ -118,10 +126,9 @@ export default function Create({ regions }) {
                                         <InputError message={rutFrontendError || errors.rut} className="mt-2" />
                                     </div>
                                 </div>
-
                                 <div className='flex gap-4'>
                                     <div className="w-1/3">
-                                        <InputLabel htmlFor="region" value="Selecciona una región" />
+                                        <InputLabel htmlFor="region" value="Selecciona una región *" />
                                         <Select
                                             id="region"
                                             name="region"
@@ -135,7 +142,7 @@ export default function Create({ regions }) {
                                         <InputError message={errors.region} className="mt-2" />
                                     </div>
                                     <div className="w-1/3">
-                                        <InputLabel htmlFor="commune" value="Selecciona una comuna" />
+                                        <InputLabel htmlFor="commune" value="Selecciona una comuna *" />
                                         <Select
                                             id="commune"
                                             name="commune"
@@ -152,7 +159,7 @@ export default function Create({ regions }) {
                                         <InputError message={errors.commune} className="mt-2" />
                                     </div>
                                     <div className="w-1/3">
-                                        <InputLabel htmlFor="address" value="Dirección" />
+                                        <InputLabel htmlFor="address" value="Dirección *" />
                                         <TextInput
                                             id="address"
                                             type="text"
@@ -180,7 +187,7 @@ export default function Create({ regions }) {
                                         <InputError message={errors.phone} className="mt-2" />
                                     </div>
                                     <div className="w-1/2">
-                                        <InputLabel htmlFor="start_date" value="Fecha de Inicio" />
+                                        <InputLabel htmlFor="start_date" value="Fecha de Inicio *" />
                                         <TextInput
                                             id="start_date"
                                             type="date"
@@ -192,18 +199,18 @@ export default function Create({ regions }) {
                                         <InputError message={errors.start_date} className="mt-2" />
                                     </div>
                                 </div>
-                                <div className="flex items-center justify-start mt-6">
+                                <div className="flex items-center justify-start mt-auto pt-6 border-t">
                                     <Button
-                                        type="submit"
+                                        onClick={handleButtonCancel}
                                         className="m-4 shadow-lg rounded button border-2 border-gray-400 py-3 px-5"
-                                        disabled={processing} 
+                                        disabled={processing}
                                     >
                                         {processing ? 'Cancelando...' : 'Cancelar'}
                                     </Button>
                                     <Button
                                         type="submit"
                                         className="m-4 bg-gray-800 rounded button py-3 px-5 text-white"
-                                        disabled={processing} 
+                                        disabled={processing}
                                     >
                                         {processing ? 'Guardando...' : 'Crear Cliente'}
                                     </Button>

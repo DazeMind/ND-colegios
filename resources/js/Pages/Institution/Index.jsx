@@ -25,14 +25,14 @@ export default function Dashboard({institutions, filters }) {
     });
 
     function fetchData(pageUrl = null) {
-        get(
-            pageUrl || route('dashboard'),
-            {
-            search: data.search,
-            per_page: data.per_page,
-            },
-            { preserveState: true, replace: true }
-        );
+        const url = new URL(pageUrl || route('dashboard'), window.location.origin);
+        url.searchParams.set('search', data.search);
+        url.searchParams.set('per_page', data.per_page);
+
+        router.get(url.toString(), {}, {
+            preserveState: true,
+            replace: true,
+        });
     }
     
     const handlePerPageChange = (e) => {
@@ -75,7 +75,7 @@ export default function Dashboard({institutions, filters }) {
                             onChange={e => setData('search', e.target.value)}
                         />
                         </div>
-                    <Button onClick={createInstitution} className='ms-12 bg-yellow-500 text-white px-12 py-2 rounded hover:bg-blue-600'>
+                    <Button onClick={createInstitution} className='ms-12 bg-yellow-500 text-white px-8 py-2 rounded hover:bg-blue-600 text-sm'>
                     + NUEVO 
                     </Button>
                 </div>
@@ -132,11 +132,8 @@ export default function Dashboard({institutions, filters }) {
                                 </td>
                                 <td className={classes}>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                    <span className={`mr-1 ${
-                                        institution.state.id === 1 ? 'text-green-500'
-                                        : institution.state.id === 2 ? 'text-yellow-500'
-                                        : 'text-red-500'
-                                        }`}>●</span> {institution.state.name}
+                                    <span className={`mr-1 text-${institution.state.color}-500`}>●</span>
+                                    {institution.state.name}
                                     </Typography>
                                 </td>
                                 <td className={classes}>
@@ -153,7 +150,7 @@ export default function Dashboard({institutions, filters }) {
             </div>
         </div>
 
-            <div className="flex justify-between items-center px-4 py-2 bg-white ">
+            <div className="fixed bottom-0 left-64 right-0 flex flex-wrap justify-between items-center gap-4 px-4 py-2 bg-white border-t border-gray-200 shadow-md overflow-x-auto" id='footer'>
                 <span className="text-sm text-gray-500">
                     Mostrando {institutions.from} a {institutions.to} de {institutions.total} resultados
                 </span>

@@ -44,7 +44,7 @@ export default function Dashboard({users}) {
                 )}
                 <div className="overflow-x-auto bg-white shadow-sm sm:rounded-lg">
                     <table className="w-full min-w-max table-auto text-left">
-                        <thead>
+                        <thead className='bg-gray-300'>
                             <tr>
                             {TABLE_HEAD.map((head) => (
                                 <th
@@ -54,7 +54,7 @@ export default function Dashboard({users}) {
                                 <Typography
                                     variant="small"
                                     color="blue-gray"
-                                    className="font-normal opacity-70"
+                                    className="font-bold text-gray-500 opacity-70"
                                 >
                                     {head}
                                 </Typography>

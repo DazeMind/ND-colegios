@@ -3,7 +3,7 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Button } from '@headlessui/react';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm,router } from '@inertiajs/react';
 import { validateRut,validatePhone } from '@/Utils/Validations';
 import {  useState } from 'react';
 import TabsNav from '@/Components/NavBar/NavsBar';
@@ -67,15 +67,19 @@ export default function Create({ schools }) {
             }
         });
     };
-
+    function handleButtonCancel (){
+        router.get(route('user.index'), {
+            onFinish: () => console.log('redirigiendo'),
+        });
+    }
     return (
         <AuthenticatedLayout
             header={ <TabsNav activeTabKey="usuarios"/> }
         >
             <Head title="Crear Usuario" />
-            <div className="">
+            <div className="p-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="bg-white shadow-sm sm:rounded-lg">
+                    <div className=" shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             <form onSubmit={handleSubmit} className="space-y-4">
 
@@ -170,7 +174,7 @@ export default function Create({ schools }) {
 
                                 <div className="flex items-center justify-start mt-6">
                                     <Button
-                                        type="submit"
+                                        onClick={handleButtonCancel}
                                         className="m-4 shadow-lg rounded button border-2 border-gray-400 py-3 px-5"
                                         disabled={processing} 
                                     >
@@ -181,7 +185,7 @@ export default function Create({ schools }) {
                                         className="m-4 bg-gray-800 rounded button py-3 px-5 text-white"
                                         disabled={processing} 
                                     >
-                                        {processing ? 'Guardando...' : 'Agregar'}
+                                        {processing ? 'Guardando...' : 'Crear Colegio'}
                                     </Button>
                                 </div>
                             </form>

@@ -47,7 +47,6 @@ class InstitutionController extends Controller
      */
     public function create()
     {
-        
         return Inertia::render('Institution/Create', [
             'regions' => Region::with('province.comuna')->get(),
         ]);

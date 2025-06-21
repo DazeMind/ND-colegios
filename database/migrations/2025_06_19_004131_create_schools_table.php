@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('rut');
             $table->string('address');
-            $table->integer('phone');
+            $table->integer('phone')->nullable();
             $table->unsignedBigInteger('created_by');
             $table->foreignId('state_id')->constrained()->onDelete('cascade');
             $table->timestamps();

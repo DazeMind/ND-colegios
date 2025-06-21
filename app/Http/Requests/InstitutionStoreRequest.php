@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\RutChileno;
 use Illuminate\Foundation\Http\FormRequest;
 
 class InstitutionStoreRequest extends FormRequest
@@ -23,11 +24,11 @@ class InstitutionStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'rut' => 'required|string|max:10|min:9|unique:institutions,rut',
+            'rut' => ['required', 'string', 'max:10', 'unique:institutions', new RutChileno],
             'region' => 'required|int',
             'commune' => 'required|int',
             'address' => 'required|string|max:255',
-            'phone' => 'required|string|max:9|min:9',
+            'phone' => 'string|nullable|max:9|min:9',
             'start_date' => 'required',
         ];
     }
@@ -42,7 +43,6 @@ class InstitutionStoreRequest extends FormRequest
             'region.required' => 'El campo region es obligatorio.',
             'commune.required' => 'El campo comuna es obligatorio.',
             'address.required' => 'El campo direccion es obligatorio.',
-            'phone.required' => 'El campo telefono es obligatorio.',
             'phone.min' => 'El campo telefono debe tener 9 digitos',
             'phone.max' => 'El campo telefono debe tener 9 digitos.',
             'start_date.required' => 'El campo Fecha Inicio es obligatorio.',

@@ -3,10 +3,10 @@ import { router } from '@inertiajs/react';
 
 export default function TabsNav({ activeTabKey }) {
     const tabs = [
-        { name: 'Configuración cliente', key: 'cliente', route: 'institution.create' },
-        { name: 'Colegios', key: 'colegios', route: 'schools.create' },
-        { name: 'Usuarios', key: 'usuarios', route: 'user.create' },
-        { name: 'Resumen', key: 'resumen', route: 'dashboard' },
+        { name: 'Configuración cliente', key: 'cliente', route: 'institution.index' },
+        { name: 'Colegios', key: 'colegios', route: 'schools.index' },
+        { name: 'Usuarios', key: 'usuarios', route: 'user.index' },
+        { name: 'Resumen', key: 'resumen', route: 'institution.show' },
     ];
 
     return (

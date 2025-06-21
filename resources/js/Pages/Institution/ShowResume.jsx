@@ -1,3 +1,4 @@
+import TabsNav from '@/Components/NavBar/NavsBar';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { Typography } from '@material-tailwind/react';
@@ -9,7 +10,9 @@ export default function Dashboard({ institution }) {
     },[])
 
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout 
+            header={<TabsNav activeTabKey="resumen"/>}
+        >
             <Head title="Institución" />
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">

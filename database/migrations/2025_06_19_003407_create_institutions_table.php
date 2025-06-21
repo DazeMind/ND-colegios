@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('region_id')->constrained()->onDelete('cascade'); // puede omitirse pero lo deje por requerimiento solicitado "tiene region"
             $table->foreignId('commune_id')->constrained()->onDelete('cascade');
             $table->string('address');
-            $table->string('phone'); // asumimos que solo tenemos telefonos en chile (lo que validaremnos 9 digitos && comienza por 9 )
+            $table->string('phone')->nullable(); // asumimos que solo tenemos telefonos en chile (lo que validaremnos 9 digitos && comienza por 9 )
             $table->unsignedBigInteger('created_by');
             $table->date('start_date');
             $table->foreignId('state_id')->constrained()->onDelete('cascade');

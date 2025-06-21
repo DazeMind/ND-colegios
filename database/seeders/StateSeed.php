@@ -14,9 +14,9 @@ class StateSeed extends Seeder
     public function run(): void
     {
           $states = [
-            ['name' => 'Aceptado','description' => 'activo'],
-            ['name' => 'En proceso','description' => 'en proceso'],
-            ['name' => 'Rechazado','description' => 'Rechazado'],
+            ['name' => 'Aceptado','description' => 'activo', 'color'=>'green'],
+            ['name' => 'En proceso','description' => 'en proceso', 'color'=>'yellow'],
+            ['name' => 'Rechazado','description' => 'Rechazado', 'color'=>'red'],
         ];
         DB::table('states')->insert($states);
     }

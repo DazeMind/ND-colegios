@@ -34,7 +34,7 @@ export default function Login({ status, canResetPassword }) {
                 
                 <form onSubmit={submit} className="space-y-12">
                     <div>
-                        <InputLabel htmlFor="email" value="Correo"  />
+                        <InputLabel htmlFor="email" value="Usuario"  />
 
                         <TextInput
                             id="email"
@@ -81,7 +81,7 @@ export default function Login({ status, canResetPassword }) {
                         </label>
                     </div>
 
-                    <div className="mt-4 flex items-center justify-end">
+                    <div className="mt-4 flex items-center justify-center">
                         {/* {canResetPassword && (
                             <Link
                                 href={route('password.request')}
@@ -91,7 +91,7 @@ export default function Login({ status, canResetPassword }) {
                             </Link>
                         )} */}
 
-                        <PrimaryButton className="ms-4" disabled={processing}>
+                        <PrimaryButton className="w-full h-12 flex items-center justify-center" disabled={processing}>
                             Iniciar sesión
                         </PrimaryButton>
                     </div>
