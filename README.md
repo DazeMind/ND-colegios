@@ -132,7 +132,7 @@ La API se ha construido siguiendo principios RESTful y utiliza Laravel Sanctum p
 http://localhost:8000/api
 ```
 
-(o `http://ndcolegios.codazework.com/api` en producción).
+(o `https://ndcolegios.codazework.com/api` en producción).
 
 ### 4.1. Autenticación
 
