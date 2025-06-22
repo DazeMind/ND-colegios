@@ -18,7 +18,7 @@ Este proyecto es un sistema de gestión de colegios diseñado para automatizar l
 
 ## 🚀 Prueba rápida
 
-1. Visita `http://ndcolegios.codazework.com`
+1. Visita `https://ndcolegios.codazework.com`
 2. Inicia sesión con:
    - Correo: `superadmin@example.com`
    - Contraseña: `12345678`
