@@ -221,9 +221,11 @@ La solución que implemente mejora significativamente el flujo al permitir la cr
 ---
 
 ## 6. Mejoras Continuas
-
 A continuación, se enumeran algunas mejoras y cambios posibles que pueden implementarse en futuras versiones del sistema:
 
+Agregar gráficas simples con Chart.js o Recharts para visualizar crecimiento, registros por fecha, distribución regional, etc.
+- **Mejoras en al Dashboard como resumen total de instituciones, total de colegios, total de usuarios, visualizar cantidad de usuarios por colegios, etc
+- **Aunque en esta prueba técnica solo se solicitaban funciones de creación y listado, en un entorno real se deberia incorporar update, delete y show segun se requiera
 - **Sistema de Roles y Permisos:** Implementar una solución como `Spatie Laravel Permission` para gestionar diferentes perfiles de usuario (responsables, administradores, docentes, etc.).
 - **Gestión de Colegios y Usuarios:** Añadir endpoints REST para CRUD completo de colegios y usuarios, incluyendo su vinculación directa con instituciones.
 - **Validaciones Avanzadas:** Incorporar validaciones personalizadas y mensajes de error más detallados, tanto en frontend como backend.
