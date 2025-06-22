@@ -107,7 +107,7 @@ php artisan serve
 ```
 
 ### 3.3. Pasos para el Frontend (React con Vite)
-
+    ejecuta los siguientes comandos en la raiz del proyecto
 1. **Instalar Dependencias de Node:**
 
 ```bash
