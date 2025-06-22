@@ -95,18 +95,12 @@ Configura los parámetros de conexión a base de datos.
 php artisan key:generate
 ```
 
-4. **Ejecutar Migraciones:**
+4. **Ejecutar Migraciones y Poblar la Base de Datos :**
 
 ```bash
-php artisan migrate
+php artisan migrate:fresh --seed
 ```
-
-5. **Poblar la Base de Datos:**
-
-```bash
-php artisan db:seed
-```
-6. **Iniciar Servidor Laravel:**
+5. **Iniciar Servidor Laravel:**
 
 ```bash
 php artisan serve
