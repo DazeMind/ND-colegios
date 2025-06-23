@@ -215,7 +215,7 @@ Aunque no eran obligatorios para esta prueba, se sugieren los siguientes endpoin
 
 - en el flujo original la crecion de institucion->colegio->usuario parecia estar encadenada lo que significaba que no se podía acceder a la vista de resumen hasta haber creado los tres elementos.
 Esto limitaba la flexibilidad y no permitía crear instituciones, colegios o usuarios de forma independiente.
-La solución que implemente mejora significativamente el flujo al permitir la creación individual de cada elemento. Ahora se puede crear una institución sin necesidad de crear un colegio o usuario al mismo tiempo, y viceversa. Además, has facilitado el acceso al resumen general desde la tabla de instituciones, lo que hace que la navegación sea mucho más intuitiva.
+La solución que implemente mejora significativamente el flujo al permitir la creación individual de cada elemento. Ahora se puede crear una institución sin necesidad de crear un colegio o usuario al mismo tiempo, y viceversa. Además, he facilitado el acceso al resumen general desde la tabla de instituciones, lo que hace que la navegación sea mucho más intuitiva.
 
 
 ---
